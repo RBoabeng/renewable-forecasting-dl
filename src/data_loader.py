@@ -42,7 +42,7 @@ class MicrogridDataLoader:
         X, y = [], []
         
         for i in range(len(data) - lookback):
-            X.append(data[i : i + lookback, :-1]) # All features except target
+            X.append(data[i : i + lookback, :]) # All features 
             y.append(data[i + lookback, -1])      # The target value
             
         return np.array(X), np.array(y)

@@ -2,26 +2,21 @@
 import torch
 import torch.nn as nn
 
+import torch
+import torch.nn as nn
+
 class MicrogridLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, output_size):
+    # Added a default dropout of 0.2 (20% of neurons turned off during training)
+    def __init__(self, input_size, hidden_size, num_layers, output_size, dropout=0.2):
         super(MicrogridLSTM, self).__init__()
         
-        # Define the LSTM layer
-        # batch_first=True means input shape is (batch, seq, feature)
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        # We pass the dropout directly into the PyTorch LSTM module
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, 
+                            batch_first=True, dropout=dropout)
         
-        # Fully connected layer to map LSTM output to our energy prediction
         self.fc = nn.Linear(hidden_size, output_size)
         
     def forward(self, x):
-        # x shape: (batch_size, sequence_length, input_size)
-        
-        # Initial hidden and cell states are handled by PyTorch if not provided (zeros)
-        # out shape: (batch_size, sequence_length, hidden_size)
         out, _ = self.lstm(x)
-        
-        # We only care about the output of the VERY LAST time step (the 24th hour)
-        # We use out[:, -1, :] to get that last step's hidden state
         out = self.fc(out[:, -1, :])
-        
         return out
