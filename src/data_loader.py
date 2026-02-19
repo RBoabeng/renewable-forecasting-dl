@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 def load_and_preprocess(self):
     df = pd.read_csv(self.config['data']['raw_path'])
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
