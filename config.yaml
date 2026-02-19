@@ -1,0 +1,27 @@
+# Project: Renewable Energy Microgrid Forecasting
+# Control Panel for Data and Model Settings
+
+data:
+  raw_path: "data/raw/renewable_energy_dataset.csv"
+  processed_path: "data/processed/cleaned_data.csv"
+  target_column: "total_predicted_energy" 
+  features:
+    - "solar_irradiance"
+    - "wind_speed"
+    - "temperature"
+    - "humidity"
+    - "battery_state_of_charge"
+    - "hour_sin"
+    - "day_cos"
+  test_size: 0.2
+  random_state: 42
+
+model:
+  type: "LSTM"
+  input_window: 24  # Look back at the last 24 hours
+  output_window: 1  # Predict the next hour
+  hidden_size: 64
+  num_layers: 2
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 50
